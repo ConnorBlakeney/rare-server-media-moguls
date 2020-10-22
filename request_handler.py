@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-
+from categories import create_category, get_all_categories
 import json
 
 # Here's a class. It inherits from another class.
@@ -62,6 +62,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             ( resource, id ) = parsed
 
             #if elif statemtents depending on resource if query paramter does not exist goes here
+            if resource == "categories":
+                response = f"{get_all_categories()}"
 
         # Response from parse_url() is a tuple with 3
         # items in it, which means the request was for
@@ -89,11 +91,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_item = None
 
         #if elif statements depending on resource go here
+        if resource == "categories":
+            new_item = create_category(post_body)
 
-
-        
         self.wfile.write(f"{new_item}".encode())
-        
 
     def do_DELETE(self):
         self._set_headers(204)
@@ -124,7 +125,12 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         self.wfile.write("".encode())
         
-
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+        self.send_header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type')
+        self.end_headers()
 
 # This function is not inside the class. It is the starting
 # point of this application.
