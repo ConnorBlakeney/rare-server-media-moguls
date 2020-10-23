@@ -1,4 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from users import get_user_by_email, create_user, get_all_users
+from models import User
 from categories import create_category, get_all_categories
 from comments import get_all_comments
 import json
@@ -56,6 +58,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if len(parsed) == 2:
             ( resource, id ) = parsed
 
+            if resource == "users" and id is None:
+                response = get_all_users()
+            #if elif statements depending on resource if query paramter does not exist goes here
             #if elif statemtents depending on resource if query paramter does not exist goes here
             if resource == "categories":
                 response = f"{get_all_categories()}"
@@ -66,6 +71,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif len(parsed) == 3:
             ( resource, key, value ) = parsed
+
+            if key == "email" and resource == "users":
+                response = get_user_by_email(value)
 
         self.wfile.write(response.encode())
 
@@ -85,6 +93,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "categories":
             new_item = create_category(post_body)
 
+        # if id none
+        if resource == "register":
+            new_item = create_user(post_body)
+        
         self.wfile.write(f"{new_item}".encode())
 
     def do_DELETE(self):
