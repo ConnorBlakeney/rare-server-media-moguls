@@ -13,12 +13,12 @@ CREATE TABLE `User` (
     `admin` BOOLEAN
 );
 
-CREATE TABLE `Tags` (
+CREATE TABLE `Tag` (
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `tag` TEXT NOT NULL
 );
 
-CREATE TABLE `Posts` (
+CREATE TABLE `Post` (
 	`id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`title`  TEXT NOT NULL,
 	`content` TEXT NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE `Posts` (
 	FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
 );
 
-CREATE TABLE `Comments` (
+CREATE TABLE `Comment` (
     `id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `subject`  TEXT NOT NULL,
 	`content` TEXT NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `Comments` (
 	FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
 );
 
-CREATE TABLE `PostTags` (
+CREATE TABLE `PostTag` (
     `id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`post_id` INTEGER NOT NULL,
 	`tag_id` INTEGER NOT NULL,
