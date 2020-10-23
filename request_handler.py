@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from categories import create_category, get_all_categories
+from comments import get_all_comments
 import json
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -58,6 +59,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             #if elif statemtents depending on resource if query paramter does not exist goes here
             if resource == "categories":
                 response = f"{get_all_categories()}"
+            
+            if resource == "comments":
+                response = f"{get_all_comments()}"
 
 
         elif len(parsed) == 3:

@@ -1,8 +1,3 @@
-CREATE TABLE `Category` (
-    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    `category` TEXT NOT NULL
-);
-
 CREATE TABLE `Users` (
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `first_name` TEXT NOT NULL,
@@ -12,12 +7,14 @@ CREATE TABLE `Users` (
     `password` TEXT NOT NULL,
     `admin` boolean
 );
-
+CREATE TABLE `Categories` (
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `category` TEXT NOT NULL
+);
 CREATE TABLE `Tags` (
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `tag` TEXT NOT NULL
 );
-
 CREATE TABLE `Posts` (
 	`id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`title`  TEXT NOT NULL,
@@ -28,7 +25,6 @@ CREATE TABLE `Posts` (
 	FOREIGN KEY(`category_id`) REFERENCES `Categories`(`id`),
 	FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
 );
-
 CREATE TABLE `Comments` (
     `id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `subject`  TEXT NOT NULL,
@@ -39,7 +35,6 @@ CREATE TABLE `Comments` (
     FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
 	FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
 );
-
 CREATE TABLE `PostTags` (
     `id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`post_id` INTEGER NOT NULL,
@@ -47,5 +42,3 @@ CREATE TABLE `PostTags` (
     FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
 	FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 );
-
-SELECT * from Category;
