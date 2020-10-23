@@ -6,7 +6,7 @@ def create_post(new_post):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Posts
+        INSERT INTO Post
             ( title, content, category_id, publication_date, user_id )
         VALUES
             ( ?, ?, ?, ?, ?);
