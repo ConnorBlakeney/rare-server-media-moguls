@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-
 import json
+from posts import create_post
 
 # Here's a class. It inherits from another class.
 class HandleRequests(BaseHTTPRequestHandler):
@@ -89,6 +89,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_item = None
 
         #if elif statements depending on resource go here
+        if resource == "posts":
+            new_item = create_post(post_body)
 
 
         
