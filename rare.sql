@@ -3,7 +3,7 @@ CREATE TABLE `Category` (
     `category` TEXT NOT NULL
 );
 
-CREATE TABLE `Users` (
+CREATE TABLE `User` (
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `first_name` TEXT NOT NULL,
     `last_name` TEXT NOT NULL,
@@ -47,3 +47,5 @@ CREATE TABLE `PostTags` (
     FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
 	FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 );
+
+DROP TABLE `Users`;
