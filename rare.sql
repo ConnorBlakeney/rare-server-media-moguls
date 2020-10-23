@@ -1,7 +1,3 @@
-CREATE TABLE `Category` (
-    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    `category` TEXT NOT NULL
-);
 
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -10,7 +6,12 @@ CREATE TABLE `User` (
     `display_name` TEXT NOT NULL,
     `email` TEXT NOT NULL,
     `password` TEXT NOT NULL,
-    `admin` BOOLEAN
+    `admin` boolean
+);
+
+CREATE TABLE `Category` (
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `category` TEXT NOT NULL
 );
 
 CREATE TABLE `Tag` (
