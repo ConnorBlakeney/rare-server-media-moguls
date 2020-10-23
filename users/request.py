@@ -4,7 +4,7 @@ from models import User
 
 def get_all_users():
     # Open a connection to the database
-    with sqlite3.connect("rare.db") as conn:
+    with sqlite3.connect("./rare.db") as conn:
 
         # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
@@ -14,14 +14,24 @@ def get_all_users():
         db_cursor.execute("""
         SELECT
             u.id,
-            u.avatar,
+            u.first_name,
+            u.last_name,
             u.display_name,
-            u.password,
             u.email,
-            u.creation,
-            u.active
+            u.password,
+            u.admin
         FROM User u
         """)
+
+# class User():
+#     def __init__(self, id, first_name, last_name, display_name, password, email, admin, user_type):
+#         self.id = id
+#         self.first_name = first_name
+#         self.last_name = last_name
+#         self.display_name = display_name
+#         self.password = password
+#         self.email = email
+#         self.admin = admin
 
         # Initialize an empty list to hold all animal representations
         users = []
@@ -31,8 +41,8 @@ def get_all_users():
 
         for row in dataset:
 
-            user = User(row['id'], row['avatar'], row['display_name'], row['password'],
-                    row['email'], row['creation'], row['active'])
+            user = User(row['id'], row['first_name'], row['last_name'], row['display_name'],
+                    row['password'], row['email'], row['admin'])
 
             users.append(user.__dict__)
 
@@ -47,20 +57,20 @@ def get_user_by_email(email):
         db_cursor.execute("""
         select
             u.id,
-            u.avatar,
+            u.first_name,
+            u.last_name,
             u.display_name,
-            u.password,
             u.email,
-            u.creation,
-            u.active
+            u.password,
+            u.admin,
         from User u
         WHERE u.email = ?
         """, ( email, ))
 
         data = db_cursor.fetchone()
 
-        user = User(data['id'], data['avatar'], data['display_name'], 
-                    data['password'], data['email'], data['creation'],data['active'])
+        user = User(data['id'], data['first_name'], data['last_name'], data['display_name'], 
+                    data['email'], data['password'], data['admin'])
 
         # Return the JSON serialized user object
         return json.dumps(user.__dict__)
@@ -71,12 +81,12 @@ def create_user(new_user):
 
         db_cursor.execute("""
         INSERT INTO User
-            ( avatar, display_name, password, email, creation, active )
+            ( first_name, last_name, display_name, email, password, admin )
         VALUES
             ( ?, ?, ?, ?, ?, ?);
-        """, (new_user['avatar'], new_user['display_name'],
-              new_user['password'], new_user['email'],
-              new_user['creation'], new_user['active'] ))
+        """, (new_user['first_name'], new_user['last_name'], new_user['display_name'],
+              new_user['email'], new_user['password'],
+              new_user['admin'] ))
 
         id = db_cursor.lastrowid
 

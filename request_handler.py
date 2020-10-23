@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-
+from users import get_user_by_email, create_user, get_all_users
+from models import User
 import json
 
 # Here's a class. It inherits from another class.
@@ -61,7 +62,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if len(parsed) == 2:
             ( resource, id ) = parsed
 
-            #if elif statemtents depending on resource if query paramter does not exist goes here
+            if resource == "users" and id is None:
+                response = get_all_users()
+            #if elif statements depending on resource if query paramter does not exist goes here
 
         # Response from parse_url() is a tuple with 3
         # items in it, which means the request was for
@@ -90,7 +93,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         #if elif statements depending on resource go here
 
-
+        # if id none
+        if resource == "register":
+            new_item = create_user(post_body)
         
         self.wfile.write(f"{new_item}".encode())
         
