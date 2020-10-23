@@ -4,6 +4,7 @@ from models import User
 from categories import create_category, get_all_categories
 from comments import get_all_comments
 import json
+from posts import create_post
 
 class HandleRequests(BaseHTTPRequestHandler):
 
@@ -60,8 +61,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "users" and id is None:
                 response = get_all_users()
-            #if elif statements depending on resource if query paramter does not exist goes here
-            #if elif statemtents depending on resource if query paramter does not exist goes here
+
             if resource == "categories":
                 response = f"{get_all_categories()}"
             
@@ -90,6 +90,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_item = None
 
         #if elif statements depending on resource go here
+        if resource == "posts":
+            new_item = create_post(post_body)
         if resource == "categories":
             new_item = create_category(post_body)
 
