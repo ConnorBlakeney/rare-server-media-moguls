@@ -3,7 +3,7 @@ from users import get_user_by_email, create_user, get_all_users
 from models import User
 from categories import create_category, get_all_categories
 from comments import get_all_comments
-from tags import get_all_tags, create_tag, delete_tag, update_tag
+from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_tag
 from posts import create_post, get_all_posts, get_single_post
 from posts import delete_post, update_post, get_latest_post
 import json
@@ -67,6 +67,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+
             if resource == "users" and id is None:
                 response = get_all_users()
 
@@ -77,7 +78,10 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = f"{get_all_comments()}"
 
             if resource == "tags":
-                response = f"{get_all_tags()}"
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"
 
         elif len(parsed) == 3:
             ( resource, key, value ) = parsed
