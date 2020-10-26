@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from users import get_user_by_email, create_user, get_all_users
 from models import User
 from categories import create_category, get_all_categories
-from comments import get_all_comments
+from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 import json
 from posts import create_post
 
@@ -66,7 +66,10 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = f"{get_all_categories()}"
             
             if resource == "comments":
-                response = f"{get_all_comments()}"
+                if id is not None:
+                    response = f"{get_single_comment(id)}"
+                else:
+                    response = f"{get_all_comments()}"
 
 
         elif len(parsed) == 3:
@@ -94,6 +97,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_item = create_post(post_body)
         if resource == "categories":
             new_item = create_category(post_body)
+        if resource == "comments":
+            new_item = create_comment(post_body)
 
         # if id none
         if resource == "register":
@@ -107,6 +112,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         #if elif statements depending on resource go here
+        if resource == "comments":
+            delete_comment(id)
         
 
         
@@ -122,10 +129,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         
         #if elif statements depending on resource go here
-
+        if resource == "comments":
+            update_comment(id, post_body)
         
 
-        
         self.wfile.write("".encode())
 
 def main():
