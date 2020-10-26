@@ -113,3 +113,31 @@ def update_comment(id, new_comment):
         return False
     else:
         return True
+
+def get_comment_by_post(post_id):
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        select
+            c.id,
+            c.subject,
+            c.content, 
+            c.post_id, 
+            c.user_id,
+            c.timestamp
+        from Comment c
+        WHERE c.post_id = ?
+        """, ( post_id, ))
+
+        comments = []
+        data = db_cursor.fetchall()
+
+        for row in data:
+                # Create an customer instance from the current row
+                comment = Comment(row['id'], row['subject'], row['content'], row['post_id'], 
+                                    row['user_id'], row['timestamp'])
+                comments.append(comment.__dict__)
+        # Return the JSON serialized Customer object
+    return json.dumps(comments)

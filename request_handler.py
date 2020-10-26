@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from users import get_user_by_email, create_user, get_all_users
 from models import User
 from categories import create_category, get_all_categories
-from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
+from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment, get_comment_by_post
 from posts import create_post, get_all_posts, get_single_post
 from posts import delete_post, update_post, get_latest_post
 import json
@@ -86,6 +86,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if key == "email" and resource == "users":
                 response = get_user_by_email(value)
+            
+            if key ==="post_id" and resource == "comments":
+                response = get_comment_by_post(value)
     
             
         self.wfile.write(response.encode())
