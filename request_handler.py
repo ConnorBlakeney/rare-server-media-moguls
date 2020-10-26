@@ -3,6 +3,7 @@ from users import get_user_by_email, create_user, get_all_users
 from models import User
 from categories import create_category, get_all_categories
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment, get_comment_by_post
+from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_tag
 from posts import create_post, get_all_posts, get_single_post
 from posts import delete_post, update_post, get_latest_post
 import json
@@ -35,8 +36,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             return (resource, id)
 
-
-
     def _set_headers(self, status):
         self.send_response(status)
         self.send_header('Content-type', 'application/json')
@@ -48,9 +47,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-        self.send_header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type') 
+        self.send_header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type')
         self.end_headers()
-        
+
     def do_GET(self):
         self._set_headers(200)
         response = {}
@@ -68,18 +67,24 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+
             if resource == "users" and id is None:
                 response = get_all_users()
 
             if resource == "categories":
                 response = f"{get_all_categories()}"
-            
+
             if resource == "comments":
                 if id is not None:
                     response = f"{get_single_comment(id)}"
                 else:
                     response = f"{get_all_comments()}"
 
+            if resource == "tags":
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"
 
         elif len(parsed) == 3:
             ( resource, key, value ) = parsed
@@ -93,7 +98,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             
         self.wfile.write(response.encode())
 
-    
     def do_POST(self):
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
@@ -108,15 +112,19 @@ class HandleRequests(BaseHTTPRequestHandler):
         #if elif statements depending on resource go here
         if resource == "posts":
             new_item = create_post(post_body)
+
         if resource == "categories":
             new_item = create_category(post_body)
         if resource == "comments":
             new_item = create_comment(post_body)
 
+        if resource == "tags":
+            new_item = create_tag(post_body)
+
         # if id none
         if resource == "register":
             new_item = create_user(post_body)
-        
+
         self.wfile.write(f"{new_item}".encode())
 
     def do_DELETE(self):
@@ -125,15 +133,18 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         #if elif statements depending on resource go here
+
         if resource == "comments":
             delete_comment(id)
+
         if resource == "posts":
             delete_post(id)
-        
 
-        
+        if resource == "tags":
+            delete_tag(id)
+
         self.wfile.write("".encode())
-        
+
     def do_PUT(self):
         self._set_headers(204)
         content_len = int(self.headers.get('content-length', 0))
@@ -142,13 +153,15 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url(self.path)
 
-        
         #if elif statements depending on resource go here
         if resource == "comments":
             success = update_comment(id, post_body)
-        
+
         if resource == "posts":
-            success  = update_post(id, post_body)
+            success = update_post(id, post_body)
+
+        if resource == "tags":
+            success = update_tag(id, post_body)
 
         if success:
             self._set_headers(204)
