@@ -23,16 +23,6 @@ def get_all_users():
         FROM User u
         """)
 
-# class User():
-#     def __init__(self, id, first_name, last_name, display_name, password, email, admin, user_type):
-#         self.id = id
-#         self.first_name = first_name
-#         self.last_name = last_name
-#         self.display_name = display_name
-#         self.password = password
-#         self.email = email
-#         self.admin = admin
-
         # Initialize an empty list to hold all animal representations
         users = []
 
@@ -62,7 +52,7 @@ def get_user_by_email(email):
             u.display_name,
             u.email,
             u.password,
-            u.admin,
+            u.admin
         from User u
         WHERE u.email = ?
         """, ( email, ))

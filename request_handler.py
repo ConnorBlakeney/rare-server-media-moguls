@@ -3,8 +3,9 @@ from users import get_user_by_email, create_user, get_all_users
 from models import User
 from categories import create_category, get_all_categories
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
+from posts import create_post, get_all_posts, get_single_post
+from posts import delete_post, update_post, get_latest_post
 import json
-from posts import create_post
 
 class HandleRequests(BaseHTTPRequestHandler):
 
@@ -59,6 +60,14 @@ class HandleRequests(BaseHTTPRequestHandler):
         if len(parsed) == 2:
             ( resource, id ) = parsed
 
+            if resource == "latest_post":
+                response = f"{get_latest_post()}"
+
+            if resource == "posts":
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
             if resource == "users" and id is None:
                 response = get_all_users()
 
@@ -114,6 +123,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         #if elif statements depending on resource go here
         if resource == "comments":
             delete_comment(id)
+        if resource == "posts":
+            delete_post(id)
         
 
         
@@ -132,6 +143,13 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "comments":
             update_comment(id, post_body)
         
+        if resource == "posts":
+            success  = update_post(id, post_body)
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
 
         self.wfile.write("".encode())
 
