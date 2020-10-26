@@ -3,12 +3,9 @@ from users import get_user_by_email, create_user, get_all_users
 from models import User
 from categories import create_category, get_all_categories
 from comments import get_all_comments
-<<<<<<< HEAD
-from tags import get_all_tags, create_tag
-=======
+from tags import get_all_tags, create_tag, delete_tag
 from posts import create_post, get_all_posts, get_single_post
 from posts import delete_post, update_post, get_latest_post
->>>>>>> main
 import json
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -123,12 +120,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         #if elif statements depending on resource go here
-<<<<<<< HEAD
-=======
         if resource == "posts":
             delete_post(id)
-        
->>>>>>> main
+
+        if resource == "tags":
+            delete_tag(id)
 
         self.wfile.write("".encode())
 
@@ -140,11 +136,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url(self.path)
 
-<<<<<<< HEAD
         #if elif statements depending on resource go here
 
-=======
-        
+
         if resource == "posts":
             success  = update_post(id, post_body)
 
@@ -153,8 +147,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         else:
             self._set_headers(404)
 
-        
->>>>>>> main
+
         self.wfile.write("".encode())
 
 def main():
