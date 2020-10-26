@@ -49,3 +49,10 @@ CREATE TABLE `PostTag` (
 	FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 );
 
+INSERT INTO `Category` VALUES (null, 'US News');
+INSERT INTO `Category` VALUES (null, 'World News');
+INSERT INTO `Category` VALUES (null, 'Entertainment');
+INSERT INTO `Category` VALUES (null, 'Reviews');
+INSERT INTO `Category` VALUES (null, 'Tech News');
+
+SELECT * FROM Category
