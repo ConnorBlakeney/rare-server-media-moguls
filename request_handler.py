@@ -2,8 +2,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from users import get_user_by_email, create_user, get_all_users
 from models import User
 from categories import create_category, get_all_categories
-from comments import get_all_comments
 from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_tag
+from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 from posts import create_post, get_all_posts, get_single_post
 from posts import delete_post, update_post, get_latest_post
 import json
@@ -75,7 +75,10 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = f"{get_all_categories()}"
 
             if resource == "comments":
-                response = f"{get_all_comments()}"
+                if id is not None:
+                    response = f"{get_single_comment(id)}"
+                else:
+                    response = f"{get_all_comments()}"
 
             if resource == "tags":
                 if id is not None:
@@ -88,6 +91,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if key == "email" and resource == "users":
                 response = get_user_by_email(value)
+
 
         self.wfile.write(response.encode())
 
@@ -108,6 +112,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "categories":
             new_item = create_category(post_body)
+        if resource == "comments":
+            new_item = create_comment(post_body)
 
         if resource == "tags":
             new_item = create_tag(post_body)
@@ -124,6 +130,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         #if elif statements depending on resource go here
+
+        if resource == "comments":
+            delete_comment(id)
 
         if resource == "posts":
             delete_post(id)
@@ -142,6 +151,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         #if elif statements depending on resource go here
+        if resource == "comments":
+            success = update_comment(id, post_body)
 
         if resource == "posts":
             success = update_post(id, post_body)
