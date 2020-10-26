@@ -3,6 +3,7 @@ from users import get_user_by_email, create_user, get_all_users
 from models import User
 from categories import create_category, get_all_categories
 from comments import get_all_comments
+from tags import get_all_tags, create_tag
 import json
 from posts import create_post
 
@@ -34,8 +35,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             return (resource, id)
 
-
-
     def _set_headers(self, status):
         self.send_response(status)
         self.send_header('Content-type', 'application/json')
@@ -47,9 +46,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-        self.send_header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type') 
+        self.send_header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type')
         self.end_headers()
-        
+
     def do_GET(self):
         self._set_headers(200)
         response = {}
@@ -64,10 +63,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "categories":
                 response = f"{get_all_categories()}"
-            
+
             if resource == "comments":
                 response = f"{get_all_comments()}"
 
+            if resource == "tags":
+                response = f"{get_all_tags()}"
 
         elif len(parsed) == 3:
             ( resource, key, value ) = parsed
@@ -77,7 +78,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         self.wfile.write(response.encode())
 
-    
     def do_POST(self):
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
@@ -92,13 +92,17 @@ class HandleRequests(BaseHTTPRequestHandler):
         #if elif statements depending on resource go here
         if resource == "posts":
             new_item = create_post(post_body)
+
         if resource == "categories":
             new_item = create_category(post_body)
+
+        if resource == "tags":
+            new_item = create_tag(post_body)
 
         # if id none
         if resource == "register":
             new_item = create_user(post_body)
-        
+
         self.wfile.write(f"{new_item}".encode())
 
     def do_DELETE(self):
@@ -107,11 +111,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         #if elif statements depending on resource go here
-        
 
-        
         self.wfile.write("".encode())
-        
+
     def do_PUT(self):
         self._set_headers(204)
         content_len = int(self.headers.get('content-length', 0))
@@ -120,12 +122,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url(self.path)
 
-        
         #if elif statements depending on resource go here
 
-        
-
-        
         self.wfile.write("".encode())
 
 def main():

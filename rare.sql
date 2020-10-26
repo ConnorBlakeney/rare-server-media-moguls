@@ -48,3 +48,13 @@ CREATE TABLE `PostTag` (
     FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
 	FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 );
+
+INSERT INTO `Tag` VALUES (null, 'Sports');
+INSERT INTO `Tag` VALUES (null, 'Dogs');
+INSERT INTO `Tag` VALUES (null, 'Weather');
+INSERT INTO `Tag` VALUES (null, 'Love');
+INSERT INTO `Tag` VALUES (null, 'Workflow');
+INSERT INTO `Tag` VALUES (null, 'Data');
+
+SELECT * FROM `Tag`
+
