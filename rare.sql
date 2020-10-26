@@ -48,3 +48,9 @@ CREATE TABLE `PostTag` (
     FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
 	FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 );
+
+
+INSERT INTO `Comment` VALUES (null, "Stupid", "I think this post is so stupid.", 1, 1, "something");
+INSERT INTO `Comment` VALUES (null, "Yessss", "This is literally the greatest thing!", 1, 1, "something");
+
+INSERT INTO `Post` VALUES (null, "Science", "This is a science post", 1, "something", 2);

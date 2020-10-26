@@ -6,5 +6,4 @@ class Comment():
         self.post_id = post_id
         self.user_id = user_id
         self.user = None
-        self.post = None
         self.timestamp = timestamp
