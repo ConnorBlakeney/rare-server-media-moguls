@@ -142,7 +142,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         #if elif statements depending on resource go here
         if resource == "comments":
-            update_comment(id, post_body)
+            success = update_comment(id, post_body)
         
         if resource == "posts":
             success  = update_post(id, post_body)
