@@ -49,5 +49,3 @@ CREATE TABLE `PostTag` (
 	FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 );
 
-
-SELECT * FROM User;
