@@ -48,4 +48,3 @@ CREATE TABLE `PostTag` (
     FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
 	FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 );
-
