@@ -51,3 +51,21 @@ def delete_tag(id):
         DELETE FROM tag
         WHERE id = ?
         """, (id, ))
+
+def update_tag(id, new_tag):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Tag
+            SET
+                tag = ?
+        WHERE id = ?
+        """, (new_tag['tag'], id, ))
+
+        rows_affected = db_cursor.rowcount
+
+    if rows_affected == 0:
+        return False
+    else:
+        return True
