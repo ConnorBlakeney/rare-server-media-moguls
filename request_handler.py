@@ -92,7 +92,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             if key == "email" and resource == "users":
                 response = get_user_by_email(value)
             
-            if key ==="post_id" and resource == "comments":
+            if key == "post_id" and resource == "comments":
                 response = get_comment_by_post(value)
     
             
