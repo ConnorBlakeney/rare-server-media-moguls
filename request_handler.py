@@ -83,7 +83,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if key == "email" and resource == "users":
                 response = get_user_by_email(value)
-
+    
+            
         self.wfile.write(response.encode())
 
     
