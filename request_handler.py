@@ -1,11 +1,14 @@
+import json
+import sqlite3
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from users import get_user_by_email, create_user, get_all_users
-from models import User, Category, Comment, Post, Tag
-from categories import get_all_categories, get_single_category, create_category, update_category, delete_category
+from models import User, Category, Comment, Post, Tag, PostTag
+from categories import create_category, get_all_categories, get_single_category, update_category, delete_category
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment, get_comment_by_post
 from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_tag
-from posts import create_post, get_all_posts, get_single_post, delete_post, update_post, get_latest_post
-import json
+from post_tags import add_post_tag, get_all_post_tags, get_post_tags_by_post_id, remove_post_tag
+from posts import create_post, get_all_posts, get_single_post, delete_post, update_post
+
 
 class HandleRequests(BaseHTTPRequestHandler):
 
@@ -21,7 +24,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             key = pair[0]
             value = pair[1]
 
-            return ( resource, key, value )
+            return (resource, key, value)
 
         else:
             id = None
@@ -41,22 +44,21 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
 
-
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-        self.send_header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type')
+        self.send_header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE')
+        self.send_header('Access-Control-Allow-Headers','X-Requested-With, Content-Type')
         self.end_headers()
 
     def do_GET(self):
         self._set_headers(200)
         response = {}
 
-        parsed= self.parse_url(self.path)
+        parsed = self.parse_url(self.path)
 
         if len(parsed) == 2:
-            ( resource, id ) = parsed
+            (resource, id) = parsed
 
             if resource == "latest_post":
                 response = f"{get_latest_post()}"
@@ -66,6 +68,9 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+
+            if resource == "post_tags":
+                response = get_all_post_tags()
 
             if resource == "users" and id is None:
                 response = get_all_users()
@@ -89,15 +94,17 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_all_tags()}"
 
         elif len(parsed) == 3:
-            ( resource, key, value ) = parsed
+            (resource, key, value) = parsed
 
             if key == "email" and resource == "users":
                 response = get_user_by_email(value)
-            
+
+            if key == "post_id" and resource == "post_tags":
+                response = get_post_tags_by_post_id(value)
+
             if key == "post_id" and resource == "comments":
                 response = get_comment_by_post(value)
-    
-            
+
         self.wfile.write(response.encode())
 
     def do_POST(self):
@@ -111,19 +118,21 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         new_item = None
 
-        #if elif statements depending on resource go here
         if resource == "posts":
             new_item = create_post(post_body)
 
         if resource == "categories":
             new_item = create_category(post_body)
+
         if resource == "comments":
             new_item = create_comment(post_body)
 
         if resource == "tags":
             new_item = create_tag(post_body)
 
-        # if id none
+        if resource == "post_tags":
+            new_item = add_post_tag(post_body)
+
         if resource == "register":
             new_item = create_user(post_body)
 
@@ -134,8 +143,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url(self.path)
 
-        #if elif statements depending on resource go here
-
         if resource == "comments":
             delete_comment(id)
 
@@ -144,6 +151,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "tags":
             delete_tag(id)
+
+        if resource == "post_tags":
+            remove_post_tag(id)
 
         if resource == "categories":
             delete_category(id)
@@ -158,7 +168,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url(self.path)
 
-        #if elif statements depending on resource go here
         if resource == "comments":
             success = update_comment(id, post_body)
 
@@ -178,10 +187,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         self.wfile.write("".encode())
 
+
 def main():
     host = ''
     port = 8000
     HTTPServer((host, port), HandleRequests).serve_forever()
+
 
 if __name__ == "__main__":
     main()
