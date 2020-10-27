@@ -40,6 +40,7 @@ def get_all_posts():
         FROM POST p
         JOIN Category c ON c.id = p.category_id
         JOIN User u ON u.id = p.user_id
+        ORDER BY p.publication_date DESC
         """)
 
         posts = []
