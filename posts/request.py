@@ -48,7 +48,6 @@ def get_all_posts():
 
         for row in dataset:
 
-            # Create an post instance from the current row
             post = Post(row['id'], row['title'], row['content'], row['category_id'],
                         row['publication_date'], row['user_id'])
             
@@ -62,7 +61,6 @@ def get_all_posts():
             posts.append(post.__dict__)
             
 
-        # Return the JSON serialized Customer object
         return json.dumps(posts)
 def get_single_post(id):
     with sqlite3.connect("./rare.db") as conn:
@@ -157,7 +155,6 @@ def update_post(id, new_post):
     if rows_affected == 0:
         return False
     else:
-        # Forces 204 response by main module
         return True
 
 def get_posts_by_category_id(category_id):
@@ -187,7 +184,6 @@ def get_posts_by_category_id(category_id):
 
         for row in dataset:
 
-            # Create an post instance from the current row
             post = Post(row['id'], row['title'], row['content'], row['category_id'],
                         row['publication_date'], row['user_id'])
             
@@ -201,5 +197,4 @@ def get_posts_by_category_id(category_id):
             posts.append(post.__dict__)
             
 
-        # Return the JSON serialized Customer object
         return json.dumps(posts)
