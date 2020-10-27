@@ -2,7 +2,7 @@ import json
 import sqlite3
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from users import get_user_by_email, create_user, get_all_users
-from models import User
+from models import User, Category, Comment, Post, Tag, PostTag
 from categories import create_category, get_all_categories, get_single_category, update_category, delete_category
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment, get_comment_by_post
 from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_tag

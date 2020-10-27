@@ -24,7 +24,6 @@ def create_post(new_post):
 
 def get_all_posts():
     with sqlite3.connect("./rare.db") as conn:
-
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -35,8 +34,12 @@ def get_all_posts():
             p.content,
             p.category_id,
             p.publication_date,
-            p.user_id
-        FROM post p
+            p.user_id,
+            c.category,
+            u.display_name
+        FROM POST p
+        JOIN Category c ON c.id = p.category_id
+        JOIN User u ON u.id = p.user_id
         """)
 
         posts = []
@@ -45,14 +48,22 @@ def get_all_posts():
 
         for row in dataset:
 
-            post = Post(row['id'], row['title'], row['content'],
-                            row['category_id'], row['publication_date'],
-                            row['user_id'])
+            # Create an post instance from the current row
+            post = Post(row['id'], row['title'], row['content'], row['category_id'],
+                        row['publication_date'], row['user_id'])
+            
+            user = User("", "", "", row['display_name'], "", "", "")
+            
+            category = Category("", row['category'])
 
+            post.user = user.__dict__
+            post.category = category.__dict__
+            
             posts.append(post.__dict__)
+            
 
-    return json.dumps(posts)
-
+        # Return the JSON serialized Customer object
+        return json.dumps(posts)
 def get_single_post(id):
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
