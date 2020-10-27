@@ -15,7 +15,7 @@ def create_post(new_post):
               new_post['category_id'], new_post['publication_date'],
               new_post['user_id'], ))
 
-        id = db_cursor.lastrowid                                                                                                
+        id = db_cursor.lastrowid
 
         new_post['id'] = id
 
@@ -69,7 +69,7 @@ def get_single_post(id):
             u.display_name
         FROM post p
         JOIN user u ON u.id = p.user_id
-        WHERE p.id = ?;
+        WHERE p.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
@@ -99,8 +99,8 @@ def get_latest_post():
             u.display_name
         FROM post p
         JOIN user u ON u.id = p.user_id
-        ORDER BY u.id DESC
-        LIMIT 1;
+        ORDER BY p.id DESC
+        LIMIT 1
         """)
 
         data = db_cursor.fetchone()
@@ -144,8 +144,6 @@ def update_post(id, new_post):
         rows_affected = db_cursor.rowcount
 
     if rows_affected == 0:
-        # Forces 404 response by main module
         return False
     else:
-        # Forces 204 response by main module
         return True

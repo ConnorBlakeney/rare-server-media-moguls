@@ -13,8 +13,8 @@ def get_all_comments():
         SELECT
             c.id,
             c.subject,
-            c.content, 
-            c.post_id, 
+            c.content,
+            c.post_id,
             c.user_id,
             c.timestamp
         FROM Comment c
@@ -31,7 +31,6 @@ def get_all_comments():
 
     return json.dumps(comments)
 
-# Do we need to join the comments with the post table?
 def get_single_comment(id):
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
@@ -41,8 +40,8 @@ def get_single_comment(id):
         SELECT
             c.id,
             c.subject,
-            c.content, 
-            c.post_id, 
+            c.content,
+            c.post_id,
             c.user_id,
             c.timestamp,
             u.display_name
@@ -56,7 +55,7 @@ def get_single_comment(id):
         comment = Comment(data['id'], data['subject'], data['content'], data['post_id'],
                         data['user_id'], data['timestamp'],
                         )
-        
+
         user = User("", "", "", data['display_name'], "", "", "")
         comment.user = user.__dict__
 
@@ -113,3 +112,29 @@ def update_comment(id, new_comment):
         return False
     else:
         return True
+
+def get_comment_by_post(post_id):
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        select
+            c.id,
+            c.subject,
+            c.content,
+            c.post_id,
+            c.user_id,
+            c.timestamp
+        from Comment c
+        WHERE c.post_id = ?
+        """, ( post_id, ))
+
+        comments = []
+        data = db_cursor.fetchall()
+
+        for row in data:
+                comment = Comment(row['id'], row['subject'], row['content'], row['post_id'],
+                                    row['user_id'], row['timestamp'])
+                comments.append(comment.__dict__)
+    return json.dumps(comments)

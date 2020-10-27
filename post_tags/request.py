@@ -86,10 +86,3 @@ def remove_post_tag(post_tag_id):
         FROM PostTag
         WHERE id = ?
         """, (post_tag_id, ) )
-
-        # rows_affected = db_cursor.rowcount
-
-        # if rows_affected == 0:
-        #     return False
-        # else:
-        #     return True
