@@ -1,15 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from users import get_user_by_email, create_user, get_all_users
-from models import User
-<<<<<<< HEAD
-from categories import create_category, get_all_categories, get_single_category, update_category, delete_category
-=======
-from categories import create_category, get_all_categories
+from models import User, Category, Comment, Post, Tag
+from categories import get_all_categories, get_single_category, create_category, update_category, delete_category
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment, get_comment_by_post
->>>>>>> main
 from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_tag
-from posts import create_post, get_all_posts, get_single_post
-from posts import delete_post, update_post, get_latest_post
+from posts import create_post, get_all_posts, get_single_post, delete_post, update_post, get_latest_post
 import json
 
 class HandleRequests(BaseHTTPRequestHandler):
