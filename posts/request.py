@@ -76,7 +76,7 @@ def get_single_post(id):
 
         post = Post(data['id'], data['title'], data['content'], data['category_id'],
                         data['publication_date'], data['user_id'])
-        
+
         user = User("","","", data['display_name'], "" ,"","")
         post.user = user.__dict__
 
@@ -107,14 +107,14 @@ def get_latest_post():
 
         post = Post(data['id'], data['title'], data['content'], data['category_id'],
                         data['publication_date'], data['user_id'])
-        
+
         user = User("","","", data['display_name'], "" ,"","")
         post.user = user.__dict__
 
 
         return json.dumps(post.__dict__)
 
-    
+
 def delete_post(id):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
@@ -140,11 +140,10 @@ def update_post(id, new_post):
         """, (new_post['title'], new_post['content'],
               new_post['category_id'], new_post['publication_date'], new_post['user_id'], id, ))
 
-        
+
         rows_affected = db_cursor.rowcount
 
     if rows_affected == 0:
-        # Forces 404 response by main module
         return False
     else:
         # Forces 204 response by main module
