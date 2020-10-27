@@ -6,8 +6,11 @@ from models import User
 from categories import create_category, get_all_categories, get_single_category, update_category, delete_category
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment, get_comment_by_post
 from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_tag
+from posts import create_post, get_all_posts, get_single_post
+from posts import delete_post, update_post, get_latest_post
+from posts import get_posts_by_category_id
+import json
 from post_tags import add_post_tag, get_all_post_tags, get_post_tags_by_post_id, remove_post_tag
-from posts import create_post, get_all_posts, get_single_post, delete_post, update_post, get_latest_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -99,6 +102,11 @@ class HandleRequests(BaseHTTPRequestHandler):
             if key == "email" and resource == "users":
                 response = get_user_by_email(value)
 
+            if key == "category_id" and resource == "posts":
+                response = get_posts_by_category_id(value)
+
+
+            
             if key == "post_id" and resource == "post_tags":
                 response = get_post_tags_by_post_id(value)
 
