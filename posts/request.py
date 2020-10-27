@@ -69,7 +69,7 @@ def get_single_post(id):
             u.display_name
         FROM post p
         JOIN user u ON u.id = p.user_id
-        WHERE p.id = ?;
+        WHERE p.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
@@ -99,8 +99,8 @@ def get_latest_post():
             u.display_name
         FROM post p
         JOIN user u ON u.id = p.user_id
-        ORDER BY u.id DESC
-        LIMIT 1;
+        ORDER BY p.id DESC
+        LIMIT 1
         """)
 
         data = db_cursor.fetchone()
