@@ -3,6 +3,7 @@ from users import get_user_by_email, create_user, get_all_users
 from models import User
 from categories import create_category, get_all_categories
 from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_tag
+from post_tags import add_post_tag
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 from posts import create_post, get_all_posts, get_single_post
 from posts import delete_post, update_post, get_latest_post
@@ -112,13 +113,16 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "categories":
             new_item = create_category(post_body)
+
         if resource == "comments":
             new_item = create_comment(post_body)
 
         if resource == "tags":
             new_item = create_tag(post_body)
 
-        # if id none
+        if resource == "post_tags":
+            new_item = add_post_tag(post_body)
+
         if resource == "register":
             new_item = create_user(post_body)
 
