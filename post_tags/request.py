@@ -75,3 +75,21 @@ def add_post_tag(new_post_tag):
         new_post_tag['id'] = id
 
     return json.dumps(new_post_tag)
+
+def remove_post_tag(post_tag_id):
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE
+        FROM PostTag
+        WHERE id = ?
+        """, (post_tag_id, ) )
+
+        # rows_affected = db_cursor.rowcount
+
+        # if rows_affected == 0:
+        #     return False
+        # else:
+        #     return True
