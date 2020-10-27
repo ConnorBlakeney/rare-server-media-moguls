@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Post, User
+from models import Post, User, Category
 
 def create_post(new_post):
     with sqlite3.connect("./rare.db") as conn:
@@ -149,3 +149,47 @@ def update_post(id, new_post):
     else:
         # Forces 204 response by main module
         return True
+
+def get_posts_by_category_id(category_id):
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            p.id,
+            p.title,
+            p.content,
+            p.category_id,
+            p.publication_date,
+            p.user_id,
+            c.category,
+            u.display_name
+        FROM POST p
+        JOIN Category c ON c.id = p.category_id
+        JOIN User u ON u.id = p.user_id
+        WHERE p.category_id = ?
+        """, ( category_id, ))
+
+        posts = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+
+            # Create an post instance from the current row
+            post = Post(row['id'], row['title'], row['content'], row['category_id'],
+                        row['publication_date'], row['user_id'])
+            
+            user = User("", "", "", row['display_name'], "", "", "")
+            
+            category = Category("", row['category'])
+
+            post.user = user.__dict__
+            post.category = category.__dict__
+            
+            posts.append(post.__dict__)
+            
+
+        # Return the JSON serialized Customer object
+        return json.dumps(posts)

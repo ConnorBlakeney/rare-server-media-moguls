@@ -6,6 +6,7 @@ from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_ta
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 from posts import create_post, get_all_posts, get_single_post
 from posts import delete_post, update_post, get_latest_post
+from posts import get_posts_by_category_id
 import json
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -91,6 +92,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if key == "email" and resource == "users":
                 response = get_user_by_email(value)
+
+            if key == "category_id" and resource == "posts":
+                response = get_posts_by_category_id(value)
 
 
         self.wfile.write(response.encode())
