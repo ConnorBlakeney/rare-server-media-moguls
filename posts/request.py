@@ -177,6 +177,7 @@ def get_posts_by_category_id(category_id):
         JOIN Category c ON c.id = p.category_id
         JOIN User u ON u.id = p.user_id
         WHERE p.category_id = ?
+        ORDER BY p.publication_date DESC
         """, ( category_id, ))
 
         posts = []
