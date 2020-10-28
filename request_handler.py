@@ -105,8 +105,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             if key == "category_id" and resource == "posts":
                 response = get_posts_by_category_id(value)
 
-
-            
             if key == "post_id" and resource == "post_tags":
                 response = get_post_tags_by_post_id(value)
 
