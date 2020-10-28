@@ -26,3 +26,4 @@ Monica Kay:
 Austin Phy:
 Conner Blakeney:
 Samantha Maas:
+    •full CRUD handling for comments
