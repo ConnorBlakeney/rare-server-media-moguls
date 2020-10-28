@@ -32,6 +32,7 @@ def get_all_comments():
 
     return json.dumps(comments)
 
+# Do we need to join the comments with the post table?
 def get_single_comment(id):
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
