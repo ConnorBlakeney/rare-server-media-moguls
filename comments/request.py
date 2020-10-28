@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Comment
 from models import User
+from models import Post
 
 def get_all_comments():
     with sqlite3.connect("./rare.db") as conn:
@@ -113,3 +114,40 @@ def update_comment(id, new_comment):
         return False
     else:
         return True
+
+def get_comment_by_post(post_id):
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        select
+            c.id,
+            c.subject,
+            c.content,
+            c.post_id,
+            c.user_id,
+            c.timestamp,
+            p.title,
+            u.display_name
+        FROM Comment c
+        JOIN `Post` p ON c.post_id = p.id
+        JOIN `User` u ON c.user_id = u.id
+        WHERE c.post_id = ?
+        """, ( post_id, ))
+
+        comments = []
+
+        data = db_cursor.fetchall()
+
+        for row in data:
+                comment = Comment(row['id'], row['subject'], row['content'], row['post_id'], row['user_id'], row['timestamp'])
+                comments.append(comment.__dict__)
+
+                user = User(row['user_id'], "", "", row['display_name'], "", "", "")
+                comment.user = user.__dict__
+
+                post = Post(row['post_id'], row['title'], "", "", "", "")
+                comment.post = post.__dict__
+
+    return json.dumps(comments)
