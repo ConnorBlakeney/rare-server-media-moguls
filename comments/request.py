@@ -127,9 +127,11 @@ def get_comment_by_post(post_id):
             c.post_id,
             c.user_id,
             c.timestamp,
+            p.title,
             u.display_name
         FROM Comment c
-        JOIN User u ON u.id = c.user_id
+        JOIN `Post` p ON c.post_id = p.id
+        JOIN `User` u ON c.user_id = u.id
         WHERE c.post_id = ?
         """, ( post_id, ))
 
@@ -138,13 +140,13 @@ def get_comment_by_post(post_id):
         data = db_cursor.fetchall()
 
         for row in data:
-                comment = Comment(row['id'], row['subject'], row['content'], row['post_id'],
-                                    row['user_id'], row['timestamp'])
-                
-                user = User("", "", "", row['display_name'], "", "", "")
-
-                comment.user = user.__dict__
-
+                comment = Comment(row['id'], row['subject'], row['content'], row['post_id'], row['user_id'], row['timestamp'])
                 comments.append(comment.__dict__)
 
-        return json.dumps(comments)
+                user = User(row['user_id'], "", "", row['display_name'], "", "", "")
+                comment.user = user.__dict__
+
+                post = Post(row['post_id'], row['title'], "", "", "", "")
+                comment.post = post.__dict__
+
+    return json.dumps(comments)
