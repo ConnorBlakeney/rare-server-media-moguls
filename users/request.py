@@ -60,17 +60,17 @@ def get_user_by_email(email):
         data = db_cursor.fetchone()
 
         if data is not None:
-      
-            user = User(data['id'], data['first_name'], data['last_name'], data['display_name'], 
+
+            user = User(data['id'], data['first_name'], data['last_name'], data['display_name'],
                     data['email'], data['password'], data['admin'])
 
                     # Return the JSON serialized user object
             return json.dumps(user.__dict__)
-        
+
         else:
             user = User(0, '', '', '', '', '', '')
             return json.dumps(user.__dict__)
-       
+
 
 def create_user(new_user):
     with sqlite3.connect("rare.db") as conn:

@@ -8,7 +8,7 @@ from comments import get_all_comments, get_single_comment, create_comment, delet
 from tags import get_all_tags, create_tag, delete_tag, update_tag, get_single_tag
 from posts import create_post, get_all_posts, get_single_post
 from posts import delete_post, update_post, get_latest_post
-from posts import get_posts_by_category_id
+from posts import get_posts_by_category_id, get_posts_by_user_id
 import json
 from post_tags import add_post_tag, get_all_post_tags, get_post_tags_by_post_id, remove_post_tag
 
@@ -105,8 +105,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             if key == "category_id" and resource == "posts":
                 response = get_posts_by_category_id(value)
 
+            if key == "user_id" and resource == "posts":
+                response = get_posts_by_user_id(value)
 
-            
             if key == "post_id" and resource == "post_tags":
                 response = get_post_tags_by_post_id(value)
 
