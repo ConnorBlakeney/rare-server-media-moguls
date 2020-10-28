@@ -214,11 +214,11 @@ def get_posts_by_user_id(user_id):
             p.category_id,
             p.publication_date,
             p.user_id,
-            c.category,
-            u.display_name
-        FROM POST p
-        JOIN Category c ON c.id = p.category_id
-        JOIN User u ON u.id = p.user_id
+            u.display_name,
+            c.category
+        FROM `Post` p
+        JOIN `User` u ON u.id = p.user_id
+        JOIN `Category` c ON c.id = p.category_id
         WHERE p.user_id = ?
         ORDER BY p.publication_date DESC
         """, ( user_id, ))
@@ -228,12 +228,11 @@ def get_posts_by_user_id(user_id):
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-
             post = Post(row['id'], row['title'], row['content'], row['category_id'],
                         row['publication_date'], row['user_id'])
             posts.append(post.__dict__)
 
-            user = User(row['user_id'], row['first_name'], row['last_name'], "", "", "", "")
+            user = User(row['user_id'], "", "", row['display_name'], "", "", "")
             post.user = user.__dict__
 
             category = Category(row['category_id'], row['category'])
