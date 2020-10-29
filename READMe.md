@@ -20,10 +20,18 @@ Thanks to everyone on the Media-Moguls team at NSS!
 Here is a list of team members and their contributions:
 
 Rebecca Parker:
+
     •request_handler.py boilerplate code
     •full CRUD handling for posts
+
 Monica Kay:
+
 Austin Phy:
+
+    •full CRUD handling for categories
+
 Conner Blakeney:
+
 Samantha Maas:
+
     •full CRUD handling for comments
