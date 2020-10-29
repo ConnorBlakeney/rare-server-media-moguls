@@ -1,5 +1,5 @@
 # Rare: Media-Moguls The Publishing Platform for the Discerning Writer
-This app is designed for media junkies as a place to create, share and comment on content. Users can create posts with edit and delete functionality. Categories and tags can be created and associated with each post. The user is able to comment on posts and edit and delete comments that they authored. 
+This app is designed for media junkies as a place to create, share and comment on content. Users can create posts with edit and delete functionality. Categories and tags can be created and associated with each post. The user is able to comment on posts and edit and delete comments that they authored.
 
 ## Installation
 • Open a new Terminal tab (⌘T) and navigate to the server directory.
@@ -16,7 +16,7 @@ watchgod request_handler.main
 
 ## Authors and acknowledgement
 
-Thanks to everyone on the Media-Moguls team at NSS! 
+Thanks to everyone on the Media-Moguls team at NSS!
 Here is a list of team members and their contributions:
 
 Rebecca Parker:
@@ -26,12 +26,14 @@ Rebecca Parker:
 
 Monica Kay:
 
+    •full CRUD handling for post_tags
+
 Austin Phy:
 
     •full CRUD handling for categories
 
 Conner Blakeney:
-    •full CRUD handling for users 
+    •full CRUD handling for users
 
 Samantha Maas:
 
