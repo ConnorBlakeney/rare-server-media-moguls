@@ -31,6 +31,7 @@ Austin Phy:
     •full CRUD handling for categories
 
 Conner Blakeney:
+    •full CRUD handling for users 
 
 Samantha Maas:
 
